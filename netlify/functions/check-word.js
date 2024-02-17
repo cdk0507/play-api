@@ -1,17 +1,19 @@
-// Docs on event and context https://docs.netlify.com/functions/build/#code-your-function-2
-const handler = async (event) => {
-	try {
-		const subject = event.queryStringParameters.name || "World";
-		return {
-			statusCode: 200,
-			body: JSON.stringify({ message: `Hello ${subject}` }),
-			// // more keys you can return:
-			// headers: { "headerName": "headerValue", ... },
-			// isBase64Encoded: true,
-		};
-	} catch (error) {
-		return { statusCode: 500, body: error.toString() };
-	}
-};
+export default function handler(req, res) {
+	const validWords = ["hangman", "javascript", "nextjs", "react"];
+	const { word } = req.body;
+	const targetWord = validWords[Math.floor(Math.random() * validWords.length)];
 
-module.exports = { handler };
+	const maskedWord = targetWord
+		.split("")
+		.map((char, index) => (word.includes(char) ? char : "_"))
+		.join("");
+
+	const success = true;
+
+	const data = {
+		maskedWord,
+		targetWord,
+	};
+
+	res.status(200).json({ success, data });
+}
