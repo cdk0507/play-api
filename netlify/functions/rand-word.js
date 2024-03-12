@@ -13,6 +13,11 @@ exports.handler = async (event, context) => {
 		if (!wordsForToday || wordsForToday.length === 0) {
 			return {
 				statusCode: 404,
+				headers: {
+					"Access-Control-Allow-Origin": "*",
+					"Access-Control-Allow-Headers": "Content-Type",
+					"Access-Control-Allow-Methods": "GET, POST, OPTION",
+				},
 				body: JSON.stringify({ success: false, message: "No words available for today" }),
 			};
 		}
@@ -22,12 +27,22 @@ exports.handler = async (event, context) => {
 
 		return {
 			statusCode: 200,
+			headers: {
+				"Access-Control-Allow-Origin": "*",
+				"Access-Control-Allow-Headers": "Content-Type",
+				"Access-Control-Allow-Methods": "GET, POST, OPTION",
+			},
 			body: JSON.stringify({ success: true, data: selectedWord }),
 		};
 	} catch (error) {
 		console.error("Error fetching words:", error);
 		return {
 			statusCode: 500,
+			headers: {
+				"Access-Control-Allow-Origin": "*",
+				"Access-Control-Allow-Headers": "Content-Type",
+				"Access-Control-Allow-Methods": "GET, POST, OPTION",
+			},
 			body: JSON.stringify({ success: false, message: "Failed to fetch words" }),
 		};
 	}
